@@ -22,14 +22,18 @@ def read_data(file_path):
         return [], [], []
 
 def display_matrices(cost_matrix, supply, demand):
+    """Afficher les matrices de manière formatée et soignée."""
     if not cost_matrix:
         print("Aucune donnée à afficher.")
         return
-    print("Matrice des coûts:")
+
+    print("\n=====| Matrice des coûts |=====")
+    print("+" + "---+" * len(cost_matrix[0]))
     for row in cost_matrix:
-        print(" ".join(map(lambda x: f"{x:3d}", row)))
-    print("\nProvisions:", " ".join(map(lambda x: f"{x:3d}", supply)))
-    print("Demandes:", " ".join(map(lambda x: f"{x:3d}", demand)))
+        print("|" + "|".join(map(lambda x: f"{x:3d}", row)) + "|")
+        print("+" + "---+" * len(cost_matrix[0]))
+    print("\nProvisions:", "|".join(map(lambda x: f"{x:3d}", supply)))
+    print("Demandes:", "|".join(map(lambda x: f"{x:3d}", demand)))
     print("\n")
 
 def initialize_solution(method, cost_matrix, supply, demand):
@@ -216,11 +220,26 @@ def display_potential_and_marginal_costs(cost_matrix, transport_solution, u, v):
     num_clients = len(v)
     print("Potentiels des Fournisseurs (u):", u)
     print("Potentiels des Clients (v):", v)
-    marginal_costs = [[(cost_matrix[i][j] - u[i] - v[j] if u[i] is not None and v[j] is not None else None)
-                       for j in range(num_clients)] for i in range(num_suppliers)]
-    print("Coûts Marginaux:")
+
+    # Calcul des coûts marginaux
+    marginal_costs = []
+    for i in range(num_suppliers):
+        marginal_row = []
+        for j in range(num_clients):
+            if u[i] is not None and v[j] is not None:
+                mc = cost_matrix[i][j] - u[i] - v[j]
+            else:
+                mc = None
+            marginal_row.append(mc)
+        marginal_costs.append(marginal_row)
+
+    print("\n=====| Coûts Marginaux |=====")
+    print("+" + "-----+" * num_clients)
     for row in marginal_costs:
-        print(" ".join(f"{x:5}" if x is not None else "  -  " for x in row))
+        print("|" + "|".join(f"{x:5}" if x is not None else "-" for x in row) + "|")
+        print("+" + "-----+" * num_clients)
+    print("\n")    
+    return marginal_costs
 
 def is_degenerate(transport_solution):
     num_suppliers = len(transport_solution)
