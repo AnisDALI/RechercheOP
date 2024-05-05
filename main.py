@@ -37,16 +37,23 @@ def main():
         
         if alg_choice == 1:
             initial_solution = northwest_corner_method(cost_matrix, supply.copy(), demand.copy())
-            print("Solution initiale par l'algorithme du coin Nord-Ouest:")
+            print("\nSolution initiale par l'algorithme du coin Nord-Ouest:")
         elif alg_choice == 2:
             initial_solution = balas_hammer(cost_matrix, supply.copy(), demand.copy())
-            print("Solution initiale par l'algorithme de Balas-Hammer:")
+            print("\nSolution initiale par l'algorithme de Balas-Hammer:")
         else:
             print("Choix invalide, retour au menu principal.")
             continue
 
-        for row in initial_solution:
-            print(row)
+        num_suppliers = len(initial_solution)
+        num_clients = len(initial_solution[0])
+        print("+" + "-----+" * num_clients)
+        for i in range(num_suppliers):
+            row_str = "|"
+            for j in range(num_clients):
+                row_str += f"{initial_solution[i][j]:5d}|"
+            print(row_str)
+            print("+" + "-----+" * num_clients)
         
         potential_step_method(cost_matrix, initial_solution, supply, demand)
 

@@ -111,7 +111,7 @@ def balas_hammer(cost_matrix, supply, demand):
         max_penalty = penalties[0][0]
         max_penalties = [p for p in penalties if p[0] == max_penalty]
 
-        print(f"Pénalité maximale de {max_penalty} trouvée en :")
+        print(f"\nPénalité maximale de {max_penalty} trouvée en :")
         for penalty in max_penalties:
             if penalty[1] == 'row':
                 print(f" - Ligne {penalty[2]}")
