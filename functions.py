@@ -153,30 +153,30 @@ def potential_step_method(cost_matrix, initial_solution, supply, demand):
         display_current_solution_and_cost(initial_solution, cost_matrix)
         if is_degenerate(initial_solution):
             initial_solution = modify_to_non_degenerate(initial_solution, supply, demand)
-            print("Modified to non-degenerate solution:", initial_solution)
+            print("Modifié en solution non dégénérée :", initial_solution)
         u, v = calculate_potentials(cost_matrix, initial_solution, supply, demand)
         display_potential_and_marginal_costs(cost_matrix, initial_solution, u, v)
         cycle = detect_cycle(initial_solution)
         if cycle:
-            print("Cycle detected, optimizing transport along the cycle.")
+            print("Cycle détecté, optimisation du transport le long du cycle.")
             initial_solution = maximize_transport_on_cycle(initial_solution, cycle)
         optimal, edge_to_add = is_solution_optimal(cost_matrix, initial_solution, u, v)
         if not optimal:
-            print(f"Suboptimal solution, improving by adding edge: {edge_to_add}")
+            print(f"Solution sous-optimale, amélioration en ajoutant l'arête: {edge_to_add}")
             initial_solution = add_edge_to_solution(initial_solution, edge_to_add, supply, demand)
         else:
-            print("Optimal solution found.")
+            print("Solution optimale trouvée.")
     total_cost = calculate_total_cost(cost_matrix, initial_solution)
-    print("Final optimal transport solution:", initial_solution)
-    print("Total transport cost:", total_cost)
+    print("Solution de transport optimale finale :", initial_solution)
+    print("Coût total de transport:", total_cost)
     return initial_solution, total_cost
 
 def display_current_solution_and_cost(transport_solution, cost_matrix):
     total_cost = calculate_total_cost(cost_matrix, transport_solution)
-    print("Current Transport Solution:")
+    print("Solution de transport actuelle:")
     for row in transport_solution:
         print(row)
-    print("Total Transport Cost:", total_cost)
+    print("Coût total de transport:", total_cost)
 
 def calculate_total_cost(cost_matrix, transport_solution):
     total_cost = 0
@@ -326,9 +326,9 @@ def adjust_transport(transport_solution, edge_to_add, supply, demand):
     transport_solution[i][j] += amount_to_adjust
     supply[i] -= amount_to_adjust
     demand[j] -= amount_to_adjust
-    print(f"Adjusted transport by {amount_to_adjust} units from supplier {i} to client {j}.")
-    print(f"Remaining supply at supplier {i}: {supply[i]} units.")
-    print(f"Remaining demand at client {j}: {demand[j]} units.")
+    print(f"Transport ajusté de {amount_to_adjust} unités du fournisseur {i} au client {j}.")
+    print(f"Provision restante chez le fournisseur {i}: {supply[i]} unités.")
+    print(f"Demande restante chez le client {j}: {demand[j]} unités.")
 
 def add_edge_to_solution(transport_solution, edge_to_add, supply, demand):
     i, j = edge_to_add
@@ -337,9 +337,9 @@ def add_edge_to_solution(transport_solution, edge_to_add, supply, demand):
         transport_solution[i][j] += amount_to_add
         supply[i] -= amount_to_add
         demand[j] -= amount_to_add
-        print(f"Edge added between supplier {i} and client {j}, amount: {amount_to_add}")
-        print(f"Remaining supply at supplier {i}: {supply[i]}")
-        print(f"Remaining demand at client {j}: {demand[j]}")
+        print(f"Arête ajoutée entre le fournisseur {i} et le client {j}, quantité : {amount_to_add}")
+        print(f"Provision restante chez le fournisseur {i}: {supply[i]}")
+        print(f"Demande restante chez le client {j}: {demand[j]}")
     return transport_solution
 
 
