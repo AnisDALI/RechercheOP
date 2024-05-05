@@ -119,11 +119,23 @@ def balas_hammer(cost_matrix, supply, demand):
                 print(f" - Colonne {penalty[2]}")
 
         if len(max_penalties) > 1:
-            selected_penalty = random.choice(max_penalties)
+            min_costs = []
+            for penalty in max_penalties:
+                if penalty[1] == 'row':
+                    min_cost = min(cost_matrix[penalty[2]])
+                else:
+                    min_cost = min(row[penalty[2]] for row in cost_matrix)
+                min_costs.append((min_cost, penalty))
+    
+            min_costs.sort(key=lambda x: x[0])
+            min_cost, selected_penalty = min_costs[0]
+
             print("Plusieurs emplacements pour la pénalité maximale ont été détectés.")
-            print(f"Choix aléatoire : {'Ligne' if selected_penalty[1] == 'row' else 'Colonne'} {selected_penalty[2]}")
+            print(f"Choix basé sur le coût minimum : {'Ligne' if selected_penalty[1] == 'row' else 'Colonne'} {selected_penalty[2]}")
+
         else:
             selected_penalty = max_penalties[0]
+
 
         p_type, idx = selected_penalty[1], selected_penalty[2]
 
